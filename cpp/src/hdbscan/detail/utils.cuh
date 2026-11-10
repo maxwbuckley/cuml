@@ -195,7 +195,7 @@ void normalize(value_t* data, value_idx n, size_t m, cudaStream_t stream)
 
 /**
  * Computes softmax (unnormalized). The input is modified in-place. For numerical stability, the
- * maximum value of a row is subtracted from the exponent.
+ * row's L-inf norm (its largest absolute value) is subtracted from the exponent.
  * @tparam value_idx
  * @tparam value_t
  * @param[in] handle raft handle for resource reuse

@@ -1,4 +1,4 @@
-# SPDX-FileCopyrightText: Copyright (c) 2021-2026, NVIDIA CORPORATION.
+# SPDX-FileCopyrightText: Copyright (c) 2021-2026, NVIDIA CORPORATION & AFFILIATES. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 #
 from sklearn.exceptions import NotFittedError
@@ -190,7 +190,7 @@ class LabelEncoder(
 
         Parameters
         ----------
-        X : dask_cudf Series
+        y : dask_cudf Series
             The string representation of the categories.
         delayed : bool (default = True)
             Whether to execute as a delayed task or eager.

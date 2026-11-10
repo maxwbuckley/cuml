@@ -1,5 +1,5 @@
 #
-# SPDX-FileCopyrightText: Copyright (c) 2019-2025, NVIDIA CORPORATION.
+# SPDX-FileCopyrightText: Copyright (c) 2019-2026, NVIDIA CORPORATION & AFFILIATES. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 #
 
@@ -55,7 +55,7 @@ def make_blobs(
     for a randomly generated set of centroids.
 
     This function calls `make_blobs` from `cuml.datasets` on each Dask worker
-    and aggregates them into a single Dask Dataframe.
+    and concatenates the results into Dask arrays.
 
     For more information on Scikit-learn's `make_blobs
     <https://scikit-learn.org/stable/modules/generated/sklearn.datasets.make_blobs.html>`_.
@@ -85,7 +85,7 @@ def make_blobs(
         If True, then return the centers of each cluster
     verbose : int or boolean (default = False)
          Logging level.
-    shuffle : bool (default=False)
+    shuffle : bool (default=True)
               Shuffles the samples on each worker.
     order: str, optional (default='F')
         The order of the generated samples

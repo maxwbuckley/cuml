@@ -39,7 +39,7 @@ class Logger:
         self.level = Logger._Level.WARN
 
     def __repr__(self):
-        return "<Logger level={self.level.name!r}>"
+        return f"<Logger level={self.level.name!r}>"
 
     def _log(self, msg):
         print(f"[cuml.accel] {msg}", flush=True)

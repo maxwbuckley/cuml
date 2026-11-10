@@ -126,8 +126,6 @@ def fit_sgd(
         The training data.
     y : array-like, shape=(n_samples,)
         The target values.
-    convert_to_dtype : bool, default=True
-        When set to True, will convert array inputs to be of the proper dtypes.
     return_classes : bool, default=False
         Whether to preprocess `y` and return the classes. Defaults to False.
     **kwargs

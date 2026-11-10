@@ -1998,7 +1998,7 @@ def simplicial_set_embedding(
     else:
         raise ValueError(
             "Expected `init` to be an array or one of ['random', 'spectral'], "
-            " got `{init!r}`"
+            f"got `{init!r}`"
         )
 
     graph = graph.tocoo()

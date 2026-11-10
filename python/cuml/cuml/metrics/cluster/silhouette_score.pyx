@@ -53,7 +53,7 @@ def _silhouette_coeff(X, labels, metric='euclidean', sil_scores=None, chunksize=
         A string representation of the distance metric to use for evaluating
         the silhouette score. Available options are "cityblock", "cosine",
         "euclidean", "l1", "l2", "manhattan", and "sqeuclidean".
-    sil_scores : array_like, shape = (1, n_samples), dtype='float64'
+    sil_scores : array_like, shape = (n_samples,), same dtype as X
         An optional array in which to store the silhouette score for each
         sample.
     chunksize : integer (default = None)

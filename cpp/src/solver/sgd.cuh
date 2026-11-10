@@ -1,5 +1,5 @@
 /*
- * SPDX-FileCopyrightText: Copyright (c) 2018-2026, NVIDIA CORPORATION.
+ * SPDX-FileCopyrightText: Copyright (c) 2018-2026, NVIDIA CORPORATION & AFFILIATES. All rights reserved.
  * SPDX-License-Identifier: Apache-2.0
  */
 
@@ -328,8 +328,8 @@ void sgdFit(const raft::handle_t& handle,
  *        pointer to an array for predictions (size of n_rows). This will be fitted once functions
  * is executed.
  * @param loss
- *        enum to use different loss functions. Only linear regression loss functions is supported
- * right now.
+ *        loss function: squared loss (linear regression), log loss (logistic regression) or hinge
+ *        loss.
  * @param stream
  *        cuda stream
  */
@@ -374,8 +374,8 @@ void sgdPredict(const raft::handle_t& handle,
  *        pointer to an array for predictions (size of n_rows). This will be fitted once functions
  * is executed.
  * @param loss
- *        enum to use different loss functions. Only linear regression loss functions is supported
- * right now.
+ *        loss function: squared loss (linear regression), log loss (logistic regression) or hinge
+ *        loss.
  * @param stream
  *        cuda stream
  */

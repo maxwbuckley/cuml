@@ -121,7 +121,7 @@ def make_regression(
         Shuffle the samples and the features.
     coef : boolean, optional (default=False)
         If True, the coefficients of the underlying linear model are returned.
-    random_state : int, RandomState instance or None (default)
+    random_state : int or None (default)
         Seed for the random number generator for dataset creation.
     dtype: string or numpy dtype (default: 'float32')
         The output dtype. Only 'float32' or 'float64' supported.

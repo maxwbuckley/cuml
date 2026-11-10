@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 #
-# SPDX-FileCopyrightText: Copyright (c) 2019-2025, NVIDIA CORPORATION.
+# SPDX-FileCopyrightText: Copyright (c) 2019-2026, NVIDIA CORPORATION & AFFILIATES. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 #
 import argparse
@@ -47,7 +47,7 @@ parser.add_argument(
     "--random_state",
     type=str,
     default=123456,
-    help="Standard deviation of samples generated",
+    help="Random seed for generating the samples",
 )
 
 args = parser.parse_args()

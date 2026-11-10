@@ -1,5 +1,5 @@
 /*
- * SPDX-FileCopyrightText: Copyright (c) 2018-2021, NVIDIA CORPORATION.
+ * SPDX-FileCopyrightText: Copyright (c) 2018-2026, NVIDIA CORPORATION & AFFILIATES. All rights reserved.
  * SPDX-License-Identifier: Apache-2.0
  */
 
@@ -19,8 +19,8 @@ namespace Naive {
  * @param[in]   A      Matrix A
  * @param[in]   B      Matrix B
  * @param[in]   m      Rows of matrix A
- * @param[in]   n      Columns of matrix B
- * @param[in]   p      Rows of matrix A
+ * @param[in]   n      Columns of matrix A
+ * @param[in]   p      Rows of matrix B
  * @param[in]   q      Columns of matrix B
  */
 template <typename DataT>
@@ -124,7 +124,7 @@ void laggedMat(DataT* out, const DataT* in, int len, int lags)
  * @param[in]   starting_col Starting column
  * @param[in]   in_rows      Number of rows in the input matrix
  * @param[in]   out_rows     Number of rows in the output matrix
- * @param[in]   out_cols     Number of columns in the input matrix
+ * @param[in]   out_cols     Number of columns in the output matrix
  */
 template <typename DataT>
 void copy2D(DataT* out,
