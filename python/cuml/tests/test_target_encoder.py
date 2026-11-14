@@ -595,3 +595,32 @@ def test_independent_fit_integer_keys_beyond_float64_with_null(dtype, big):
     np.testing.assert_allclose(
         encoder.transform(X).ravel(), [0.0, 1.0, 0.5, 0.0, 1.0, 0.25]
     )
+
+
+@pytest.mark.parametrize(
+    "keys",
+    [
+        pytest.param([3, 1, None, 3, 2, 1], id="int64-null"),
+        pytest.param([2**53, 2**53 + 1, None, 2**53, 7, 7], id="int64-2**53"),
+        pytest.param([1.5, np.nan, 2.5, 1.5, 0.5, 2.5], id="float-nan"),
+        pytest.param(["b", None, "a", "b", "c", "a"], id="str-null"),
+    ],
+)
+def test_category_encodings_device_path_matches_host(monkeypatch, keys):
+    """Large category tables are resolved with a device merge; it must give
+    the same per-category encodings as the host lookup."""
+    import cuml.preprocessing._target_encoder as te
+
+    dtype = "int64" if isinstance(keys[0], int) else None
+    X = cudf.DataFrame({"a": cudf.Series(keys, dtype=dtype)})
+    y = cudf.Series([0.0, 1.0, 0.5, 0.25, 1.0, 0.75])
+
+    encodings = []
+    for limit in (1 << 62, 0):
+        monkeypatch.setattr(te, "_HOST_LOOKUP_MAX_CATEGORIES", limit)
+        encoder = TargetEncoder(smooth=0.5, multi_feature_mode="independent")
+        encoder.fit(X, y)
+        (enc,) = encoder._encodings_per_feature
+        assert len(enc) == len(encoder.categories_[0])
+        encodings.append(enc)
+    np.testing.assert_array_equal(encodings[0], encodings[1])

@@ -32,6 +32,14 @@ from cuml.preprocessing.encoders import (
     _safe_is_nan,
 )
 
+# Above this many categories, `TargetEncoder._category_encodings` resolves
+# the encodings with a device merge instead of a host lookup. The host lookup
+# avoids the merge's ~3 ms fixed cost, which dominates wide inputs with few
+# categories, but grows with the number of categories: on an RTX 5090 it
+# breaks even at ~30k string or ~250k integer categories, and at 1M string
+# categories it is 9x slower than the merge.
+_HOST_LOOKUP_MAX_CATEGORIES = 50_000
+
 
 class TargetEncoder(InteropMixin, Base):
     """
@@ -578,6 +586,8 @@ class TargetEncoder(InteropMixin, Base):
         matched to the null key in `encode_all` explicitly, since NaN does
         not compare equal to itself.
         """
+        if len(categories) > _HOST_LOOKUP_MAX_CATEGORIES:
+            return self._category_encodings_device(encode_all, col, categories)
         key_col = encode_all[col]
         missing = key_col.isna()
         key_missing = missing.to_numpy()
@@ -608,6 +618,26 @@ class TargetEncoder(InteropMixin, Base):
         # `out` of an empty group can be NaN for some statistics; the merge
         # path filled those with the mean as well.
         return np.where(np.isnan(out), mean, out)
+
+    def _category_encodings_device(self, encode_all, col, categories):
+        """`_category_encodings` as a cudf merge, for large category tables.
+
+        Its fixed cost is higher than the host lookup's, but it does not
+        grow with the number of categories on the host.
+        """
+        cats = _cats_to_series(categories)
+        key_dtype = encode_all[col].dtype
+        if key_dtype.kind in "iu" and cats.dtype.kind == "f":
+            # `categories_` of an integer column with a null is float64;
+            # merging float64 against the integer keys would match distinct
+            # keys above 2**53 more than once.
+            cats = cats.astype(key_dtype)
+        table = cudf.DataFrame({col: cats, "pos": cp.arange(len(cats))})
+        table = table.merge(encode_all[[col, "out"]], on=col, how="left")
+        out = table.sort_values("pos")["out"].to_numpy(
+            dtype="float64", na_value=np.nan
+        )
+        return np.where(np.isnan(out), float(self.mean), out)
 
     def _make_fold_column(self, n_samples, fold_ids):
         """
