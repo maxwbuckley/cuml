@@ -376,7 +376,7 @@ void symmetrize(raft::sparse::COO<value_t>& in,
     [set_op_mix_ratio] __device__(int row, int col, value_t result, value_t transpose) {
       value_t prod_matrix = result * transpose;
       value_t res         = set_op_mix_ratio * (result + transpose - prod_matrix) +
-                    (1.0 - set_op_mix_ratio) * prod_matrix;
+                    (value_t(1.0) - set_op_mix_ratio) * prod_matrix;
       return res;
     },
     stream);
